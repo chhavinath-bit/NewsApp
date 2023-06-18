@@ -104,24 +104,30 @@ export default function News(props) {
         <div className="row" style={{ marginTop: "70px" }}>
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
-              <input
+             <form> <input
                 type="search"
                 id="site-search"
                 name="q"
                 onChange={props.Changetext}
+               
                 placeholder="Search Your News:"
                 style={{
                   borderTopLeftRadius: "30px",
-                  width: "300px",
+                  width: "100px",
                   height: "35px",
                   borderBottomLeftRadius: "30px",
                   paddingLeft: "15px",
                   border: `1px solid black`,
                   borderColor: props.textColor,
                   color: props.textColor,
-                  fontSize: "18px"
+                  fontSize: "18px",
+                  transition: "width 1s"
                 }}
-              ></input>
+                onKeyDown={(event)=>{if(event.key==="Enter"){event.preventDefault()}}}
+                onFocus={()=>{document.getElementById("site-search").style.width="400px"}}
+                onBlur={()=>{document.getElementById("site-search").style.width="100px"}}
+              />
+              </form>
               <button
                 style={{
                   borderTopRightRadius: "30px",
@@ -133,9 +139,11 @@ export default function News(props) {
                   borderColor: props.textColor,
                   color: props.textColor,
                 }}
+               
               >
                 <Link
-                  onClick={() => props.setHeadingOfQuery(props.query)}
+               
+                  onClick={() => {props.setHeadingOfQuery(props.query)}}
                   className="nav-link"
                   to="/query"
                 >
@@ -158,6 +166,7 @@ export default function News(props) {
             </div>
 
             <p
+             
               style={{
                
                 marginLeft: "25px",
@@ -217,7 +226,7 @@ export default function News(props) {
           </div>
         </div>
         <div className="d-md-none my-3">
-          <span style={{ fontFamily: "Pacifico", color: `${props.textColor}` }}>
+          <span style={{ color: `${props.textColor}` }}>
             Number of articles per page:
           </span>
           <select value={pageSize} onChange={changePageSize}>

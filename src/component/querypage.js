@@ -6,7 +6,7 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 
 export default function Query(props) {
   const date = new Date();
-  console.log(date)
+
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
@@ -20,8 +20,10 @@ export default function Query(props) {
   //   const [props.query, setInputValue]= useState(" ")
 
   const changeQuery = async () => {
+
     props.setHeadingOfQuery(props.query);
     props.setProgress(0);
+    document.getElementById("site-search").value=""
     setLd(true);
     document.title =
       "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
@@ -125,29 +127,38 @@ export default function Query(props) {
         <div className="row" style={{ marginTop: "70px" }}>
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
-              <input
+            <form> <input
                 type="search"
                 id="site-search"
                 name="q"
                 onChange={props.Changetext}
+                
                 placeholder="Search Your News:"
                 style={{
                   borderTopLeftRadius: "30px",
-                  width: "300px",
+                  width: "100px",
                   height: "35px",
                   borderBottomLeftRadius: "30px",
                   paddingLeft: "15px",
                   border: `1px solid black`,
                   borderColor: props.textColor,
                   color: props.textColor,
-                  fontSize: "18px"
+                  fontSize: "18px",
+                  transition: "width 1s"
                 }}
                 onKeyUp={(event) => {
                   if (event.key === "Enter") {
                     changeQuery();
+                    
                   }
                 }}
+                onKeyDown={(event)=>{if(event.key==="Enter"){event.preventDefault()}}}
+                onFocus={()=>{document.getElementById("site-search").style.width="400px"}}
+                onBlur={()=>{document.getElementById("site-search").style.width="100px"}}
               ></input>
+              </form>
+              
+          
               <button
                 style={{
                   borderTopRightRadius: "30px",
@@ -237,7 +248,7 @@ export default function Query(props) {
           </div>
         </div>
         <div className="d-md-none my-3">
-          <span style={{ fontFamily: "Pacifico", color: `${props.textColor}` }}>
+          <span style={{  color: `${props.textColor}` }}>
             Number of articles per page:
           </span>
           <select value={pageSize} onChange={changePageSize}>
