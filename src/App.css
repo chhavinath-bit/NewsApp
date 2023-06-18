@@ -12,10 +12,20 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+body {
+  font-family: 'PT Serif Caption';font-size: 22px;
+}
 .btn-custom{
   background-color: black;
   color: white;
-  width: 80px;
+  width: 100px;
+}
+
+.color-picker{
+  
+  position: fixed;
+  right:35px;
+  bottom:35px;
 }
 .App-header {
   background-color: #282c34;

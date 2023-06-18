@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 export default function Navigation() {
   return (
-    <div>
+    <div style={{fontSize: "18px"}}>
     <nav className="navbar fixed-top navbar-expand-lg bg-dark"  data-bs-theme="dark">
 <div className="container-fluid">
   <Link className="navbar-brand" to="/">NEWS</Link>

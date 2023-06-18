@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import NewsItem from "./NewsItem";
 import loading from "./loading.gif";
-import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 
-export default function News(props) {
-  
+export default function Query(props) {
+  const date = new Date();
+  console.log(date)
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
@@ -17,18 +17,38 @@ export default function News(props) {
   const [totalresultTillNow, setTotalresultTillNow] = useState(
     localStorage.getItem("pageSize")
   );
+  //   const [props.query, setInputValue]= useState(" ")
 
+  const changeQuery = async () => {
+    props.setHeadingOfQuery(props.query);
+    props.setProgress(0);
+    setLd(true);
+    document.title =
+      "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
+
+    props.setHeadingOfQuery(props.query);
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
+      props.api_key
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    props.setProgress(10);
+    let data = await fetch(url);
+    props.setProgress(30);
+    let parseData = await data.json();
+    props.setProgress(50);
+    setArticle(parseData.articles);
+    setTotalresult(parseData.totalResults);
+    setLd(false);
+    props.setProgress(100);
+  };
   useEffect(() => {
     document.title =
-      props.category === "general"
-        ? "Home-News 24/7"
-        : "News-" + props.category;
-
+      "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
+    localStorage.setItem("query", props.query);
     return async () => {
       props.setProgress(0);
       setLd(true);
 
-      let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`;
+      let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
       props.setProgress(10);
       let data = await fetch(url);
       props.setProgress(30);
@@ -46,9 +66,7 @@ export default function News(props) {
     props.setProgress(0);
     setLd(true);
     setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
-      props.category
-    }&apiKey=${props.api_key}&page=${page - 1}&pageSize=${pageSize}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -66,7 +84,7 @@ export default function News(props) {
     setPageSize(event.target.value);
 
     setLd(true);
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${event.target.value}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -77,6 +95,11 @@ export default function News(props) {
 
     props.setProgress(100);
   };
+  //   const Changetext= async (event)=>{
+  //     await setInputValue(
+  //     event.target.value
+  //    )
+  //   }
 
   const nextsPage = async () => {
     window.scrollTo(0, 0);
@@ -84,9 +107,7 @@ export default function News(props) {
     setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
 
     setLd(true);
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
-      props.category
-    }&apiKey=${props.api_key}&page=${page + 1}&pageSize=${pageSize}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -121,6 +142,11 @@ export default function News(props) {
                   color: props.textColor,
                   fontSize: "18px"
                 }}
+                onKeyUp={(event) => {
+                  if (event.key === "Enter") {
+                    changeQuery();
+                  }
+                }}
               ></input>
               <button
                 style={{
@@ -133,14 +159,9 @@ export default function News(props) {
                   borderColor: props.textColor,
                   color: props.textColor,
                 }}
+                onClick={changeQuery}
               >
-                <Link
-                  onClick={() => props.setHeadingOfQuery(props.query)}
-                  className="nav-link"
-                  to="/query"
-                >
-                  <SearchIcon />
-                </Link>
+                <SearchIcon />
               </button>
             </div>
 
@@ -156,7 +177,6 @@ export default function News(props) {
                 <option>25</option>
               </select>
             </div>
-
             <p
               style={{
                
@@ -235,8 +255,9 @@ export default function News(props) {
           </div>
         )}
         <h2 style={{ color: `${props.textColor}` }} className="my-4">
-          Chhavi NEWS - Top Headlines of{" "}
-          {props.category.slice(0, 1).toUpperCase() + props.category.slice(1)}
+          Chhavi NEWS - All News regarding{" "}
+          {props.headingOfQuery.slice(0, 1).toUpperCase() +
+            props.headingOfQuery.slice(1)}
         </h2>
         <div className="row">
           {article.map((ele) => {
@@ -258,6 +279,19 @@ export default function News(props) {
               </div>
             );
           })}
+
+          {/* <div className='col-md-4 my-2'>
+        <NewsItem title="news" description="ourDesc"/>
+        </div>
+        <div className='col-md-4 my-2'>
+        <NewsItem title="news" description="ourDesc"/>
+        </div>
+        <div className='col-md-4 my-2'>
+        <NewsItem title="news" description="ourDesc"/>
+        </div>
+        <div className='col-md-4 my-2'>
+        <NewsItem title="news" description="ourDesc"/>
+        </div>   */}
         </div>
         <div className="d-flex justify-content-between my-5">
           <button
@@ -275,13 +309,12 @@ export default function News(props) {
           <button
             disabled={totalresultTillNow >= totalresult}
             className="btn btn-custom"
-            onClick={nextsPage}
             style={{
               background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
-
-              borderColor: props.textColor,
               color: props.textColor,
+              borderColor: props.textColor,
             }}
+            onClick={nextsPage}
           >
             Next
           </button>
