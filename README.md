@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# NewsApp 
 
 Created a responsive web appplication NewsApp with <b>React.js</b> and <b>NEWSAPI</b> which show all the top headlines news from indian sources. The NewsApp also provide category-wise news. You can search all the news of particular keyword with search. This web application also have previous and next button to fetch more news from <b>NEWSAPI</b>. This NewsApp web application also give freedom to user to choose their own theme.
 
