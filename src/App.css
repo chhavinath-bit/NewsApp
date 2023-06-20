@@ -20,7 +20,9 @@ body {
   color: white;
   width: 100px;
 }
-
+.btn-customPagination{
+  width: 40px;
+}
 .color-picker{
   
   position: fixed;

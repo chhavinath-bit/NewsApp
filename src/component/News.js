@@ -6,6 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 
 export default function News(props) {
+  let pagination = [];
+  const [pageArr, setPageArr] = useState([]);
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
@@ -37,6 +39,10 @@ export default function News(props) {
       setTotalresult(parseData.totalResults);
       setLd(false);
       props.setProgress(100);
+      for (let i = 1; i <= Math.ceil(parseData.totalResults / pageSize); i++) {
+        pagination.push(i);
+      }
+      setPageArr([...pagination]);
     };
   }, []);
 
@@ -59,6 +65,25 @@ export default function News(props) {
     props.setProgress(100);
   };
   const changePageSize = async (event) => {
+    pagination = [...pageArr];
+    if (event.target.value < pageSize) {
+      for (
+        let i = pagination.length;
+        i <= totalresult / event.target.value;
+        i++
+      ) {
+        pagination.push(i + 1);
+      }
+    } else if (event.target.value > pageSize) {
+      for (
+        let i = pagination.length;
+        i > Math.ceil(totalresult / event.target.value);
+        i--
+      ) {
+        pagination.pop();
+      }
+    }
+    setPageArr(pagination)
     window.scrollTo(0, 0);
     localStorage.setItem("pageSize", event.target.value);
     setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
@@ -76,7 +101,24 @@ export default function News(props) {
 
     props.setProgress(100);
   };
+  const toThatPage= async (event)=>{
+    window.scrollTo(0, 0);
+    setTotalresultTillNow(event.target.value*parseInt(pageSize));
 
+    setLd(true);
+    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
+      props.category
+    }&apiKey=${props.api_key}&page=${event.target.value}&pageSize=${pageSize}`;
+    props.setProgress(10);
+    let data = await fetch(url);
+    props.setProgress(30);
+    let parseData = await data.json();
+    props.setProgress(50);
+    setArticle(parseData.articles);
+    setPage(page + 1);
+    setLd(false);
+    props.setProgress(100);
+  }
   const nextsPage = async () => {
     window.scrollTo(0, 0);
 
@@ -283,32 +325,62 @@ export default function News(props) {
             );
           })}
         </div>
-        <div className="d-flex justify-content-between my-5">
-          <button
-            disabled={page === 1}
-            className="btn btn-custom"
-            style={{
-              background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
-              color: props.textColor,
-              borderColor: props.textColor,
-            }}
-            onClick={previousPage}
-          >
-            Previous
-          </button>
-          <button
-            disabled={totalresultTillNow >= totalresult}
-            className="btn btn-custom"
-            onClick={nextsPage}
-            style={{
-              background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
+        <div className="d-flex justify-content-center my-5">
+          <nav>
+            <ul className="pagination">
+              <li className="page-item">
+                {" "}
+                <button
+                  disabled={page === 1}
+                  className="btn btn-custom mx-1"
+                  style={{
+                    background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
+                    color: props.textColor,
+                    borderColor: props.textColor,
+                  }}
+                  onClick={previousPage}
+                >
+                  Previous
+                </button>
+              </li>
 
-              borderColor: props.textColor,
-              color: props.textColor,
-            }}
-          >
-            Next
-          </button>
+              {pageArr.map((ele) => {
+                return (
+                  <li  key={ele} className="page-item">
+                  <button
+                  value={ele} onClick={toThatPage}
+                  className="btn btn-customPagination mx-1"
+                  style={{
+                    background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
+
+                    borderColor: props.textColor,
+                    color: props.textColor,
+                  }}
+                >
+                  {ele}
+                </button>
+                  </li>
+                );
+              })}
+
+              <li className="page-item">
+                {" "}
+                <button
+                  disabled={totalresultTillNow >= totalresult}
+                  className="btn btn-custom mx-1"
+                  onClick={nextsPage}
+                  style={{
+                    background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
+
+                    borderColor: props.textColor,
+                    color: props.textColor,
+                  }}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </>
