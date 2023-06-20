@@ -20,10 +20,9 @@ export default function Query(props) {
   //   const [props.query, setInputValue]= useState(" ")
 
   const changeQuery = async () => {
-
     props.setHeadingOfQuery(props.query);
     props.setProgress(0);
-    document.getElementById("site-search").value=""
+    document.getElementById("site-search").value = "";
     setLd(true);
     document.title =
       "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
@@ -50,7 +49,9 @@ export default function Query(props) {
       props.setProgress(0);
       setLd(true);
 
-      let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+      let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
+        props.api_key
+      }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
       props.setProgress(10);
       let data = await fetch(url);
       props.setProgress(30);
@@ -68,7 +69,9 @@ export default function Query(props) {
     props.setProgress(0);
     setLd(true);
     setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
-    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
+      props.api_key
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -86,7 +89,9 @@ export default function Query(props) {
     setPageSize(event.target.value);
 
     setLd(true);
-    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
+      props.api_key
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -109,7 +114,9 @@ export default function Query(props) {
     setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
 
     setLd(true);
-    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.api_key}&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
+      props.api_key
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -127,38 +134,47 @@ export default function Query(props) {
         <div className="row" style={{ marginTop: "70px" }}>
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
-            <form> <input
-                type="search"
-                id="site-search"
-                name="q"
-                onChange={props.Changetext}
-                
-                placeholder="Search Your News:"
-                style={{
-                  borderTopLeftRadius: "30px",
-                  width: "100px",
-                  height: "35px",
-                  borderBottomLeftRadius: "30px",
-                  paddingLeft: "15px",
-                  border: `1px solid black`,
-                  borderColor: props.textColor,
-                  color: props.textColor,
-                  fontSize: "18px",
-                  transition: "width 1s"
-                }}
-                onKeyUp={(event) => {
-                  if (event.key === "Enter") {
-                    changeQuery();
-                    
-                  }
-                }}
-                onKeyDown={(event)=>{if(event.key==="Enter"){event.preventDefault()}}}
-                onFocus={()=>{document.getElementById("site-search").style.width="400px"}}
-                onBlur={()=>{document.getElementById("site-search").style.width="100px"}}
-              ></input>
+              <form>
+                {" "}
+                <input
+                  type="search"
+                  id="site-search"
+                  name="q"
+                  onChange={props.Changetext}
+                  placeholder="Search Your News:"
+                  style={{
+                    borderTopLeftRadius: "30px",
+                    width: "100px",
+                    height: "35px",
+                    borderBottomLeftRadius: "30px",
+                    paddingLeft: "15px",
+                    border: `1px solid black`,
+                    borderColor: props.textColor,
+                    color: props.textColor,
+                    fontSize: "18px",
+                    transition: "width 1s",
+                  }}
+                  onKeyUp={(event) => {
+                    if (event.key === "Enter") {
+                      changeQuery();
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                    }
+                  }}
+                  onFocus={() => {
+                    document.getElementById("site-search").style.width =
+                      "400px";
+                  }}
+                  onBlur={() => {
+                    document.getElementById("site-search").style.width =
+                      "100px";
+                  }}
+                ></input>
               </form>
-              
-          
+
               <button
                 style={{
                   borderTopRightRadius: "30px",
@@ -190,25 +206,31 @@ export default function Query(props) {
             </div>
             <p
               style={{
-               
                 marginLeft: "25px",
                 paddingTop: "12px",
                 color: `${props.textColor}`,
               }}
               id="chooseVibeLg"
               onClick={() => {
-                if ( document.getElementById("chooseVibeLg").textContent === "Choose Your Vibe:") {
+                if (
+                  document.getElementById("chooseVibeLg").textContent ===
+                  "Choose Your Vibe:"
+                ) {
                   props.setShowWheel(true);
-                  document.getElementById("chooseVibeLg").textContent="Click here to Close:"
-                  localStorage.setItem("chooseVibe","Click here to Close:")
+                  document.getElementById("chooseVibeLg").textContent =
+                    "Click here to Close:";
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
                 } else {
                   props.setShowWheel(false);
-                  document.getElementById("chooseVibeLg").textContent = "Choose Your Vibe:";
-                  localStorage.setItem("chooseVibe","Choose Your Vibe:")
+                  document.getElementById("chooseVibeLg").textContent =
+                    "Choose Your Vibe:";
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
                 }
               }}
             >
-              {localStorage.getItem("chooseVibe")?localStorage.getItem("chooseVibe"):"Choose Your Vibe:"}
+              {localStorage.getItem("chooseVibe") != null
+                ? localStorage.getItem("chooseVibe")
+                : "Choose Your Vibe:"}
             </p>
             <ColorLensIcon
               style={{ color: `${props.textColor}` }}
@@ -221,12 +243,12 @@ export default function Query(props) {
                   props.setShowWheel(true);
                   document.getElementById("chooseVibeLg").textContent =
                     "Click here to Close:";
-                    localStorage.setItem("chooseVibe","Click here to Close:")
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
                 } else {
                   props.setShowWheel(false);
                   document.getElementById("chooseVibeLg").textContent =
                     "Choose Your Vibe:";
-                    localStorage.setItem("chooseVibe","Choose Your Vibe:")
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
                 }
               }}
             />
@@ -248,7 +270,7 @@ export default function Query(props) {
           </div>
         </div>
         <div className="d-md-none my-3">
-          <span style={{  color: `${props.textColor}` }}>
+          <span style={{ color: `${props.textColor}` }}>
             Number of articles per page:
           </span>
           <select value={pageSize} onChange={changePageSize}>

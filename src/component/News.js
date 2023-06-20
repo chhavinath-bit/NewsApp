@@ -6,7 +6,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 
 export default function News(props) {
-  
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
@@ -104,29 +103,40 @@ export default function News(props) {
         <div className="row" style={{ marginTop: "70px" }}>
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
-             <form> <input
-                type="search"
-                id="site-search"
-                name="q"
-                onChange={props.Changetext}
-               
-                placeholder="Search Your News:"
-                style={{
-                  borderTopLeftRadius: "30px",
-                  width: "100px",
-                  height: "35px",
-                  borderBottomLeftRadius: "30px",
-                  paddingLeft: "15px",
-                  border: `1px solid black`,
-                  borderColor: props.textColor,
-                  color: props.textColor,
-                  fontSize: "18px",
-                  transition: "width 1s"
-                }}
-                onKeyDown={(event)=>{if(event.key==="Enter"){event.preventDefault()}}}
-                onFocus={()=>{document.getElementById("site-search").style.width="400px"}}
-                onBlur={()=>{document.getElementById("site-search").style.width="100px"}}
-              />
+              <form>
+                {" "}
+                <input
+                  type="search"
+                  id="site-search"
+                  name="q"
+                  onChange={props.Changetext}
+                  placeholder="Search Your News:"
+                  style={{
+                    borderTopLeftRadius: "30px",
+                    width: "100px",
+                    height: "35px",
+                    borderBottomLeftRadius: "30px",
+                    paddingLeft: "15px",
+                    border: `1px solid black`,
+                    borderColor: props.textColor,
+                    color: props.textColor,
+                    fontSize: "18px",
+                    transition: "width 1s",
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                    }
+                  }}
+                  onFocus={() => {
+                    document.getElementById("site-search").style.width =
+                      "400px";
+                  }}
+                  onBlur={() => {
+                    document.getElementById("site-search").style.width =
+                      "100px";
+                  }}
+                />
               </form>
               <button
                 style={{
@@ -139,11 +149,11 @@ export default function News(props) {
                   borderColor: props.textColor,
                   color: props.textColor,
                 }}
-               
               >
                 <Link
-               
-                  onClick={() => {props.setHeadingOfQuery(props.query)}}
+                  onClick={() => {
+                    props.setHeadingOfQuery(props.query);
+                  }}
                   className="nav-link"
                   to="/query"
                 >
@@ -166,27 +176,32 @@ export default function News(props) {
             </div>
 
             <p
-             
               style={{
-               
                 marginLeft: "25px",
                 paddingTop: "12px",
                 color: `${props.textColor}`,
               }}
               id="chooseVibeLg"
               onClick={() => {
-                if ( document.getElementById("chooseVibeLg").textContent === "Choose Your Vibe:") {
+                if (
+                  document.getElementById("chooseVibeLg").textContent ===
+                  "Choose Your Vibe:"
+                ) {
                   props.setShowWheel(true);
-                  document.getElementById("chooseVibeLg").textContent="Click here to Close:"
-                  localStorage.setItem("chooseVibe","Click here to Close:")
+                  document.getElementById("chooseVibeLg").textContent =
+                    "Click here to Close:";
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
                 } else {
                   props.setShowWheel(false);
-                  document.getElementById("chooseVibeLg").textContent = "Choose Your Vibe:";
-                  localStorage.setItem("chooseVibe","Choose Your Vibe:")
+                  document.getElementById("chooseVibeLg").textContent =
+                    "Choose Your Vibe:";
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
                 }
               }}
             >
-              {localStorage.getItem("chooseVibe")?localStorage.getItem("chooseVibe"):"Choose Your Vibe:"}
+              {localStorage.getItem("chooseVibe") != null
+                ? localStorage.getItem("chooseVibe")
+                : "Choose Your Vibe:"}
             </p>
             <ColorLensIcon
               style={{ color: `${props.textColor}` }}
@@ -199,12 +214,12 @@ export default function News(props) {
                   props.setShowWheel(true);
                   document.getElementById("chooseVibeLg").textContent =
                     "Click here to Close:";
-                    localStorage.setItem("chooseVibe","Click here to Close:")
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
                 } else {
                   props.setShowWheel(false);
                   document.getElementById("chooseVibeLg").textContent =
                     "Choose Your Vibe:";
-                    localStorage.setItem("chooseVibe","Choose Your Vibe:")
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
                 }
               }}
             />
