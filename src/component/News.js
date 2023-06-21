@@ -4,9 +4,13 @@ import loading from "./loading.gif";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import Onerror from "./Onerror.gif"
 
 export default function News(props) {
   let pagination = [];
+
+  
+  
   const [pageArr, setPageArr] = useState([]);
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
@@ -29,7 +33,9 @@ export default function News(props) {
       props.setProgress(0);
       setLd(true);
 
-      let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`;
+      try{
+        props.setIsfetch(true)
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`
       props.setProgress(10);
       let data = await fetch(url);
       props.setProgress(30);
@@ -42,7 +48,14 @@ export default function News(props) {
       for (let i = 1; i <= Math.ceil(parseData.totalResults / pageSize); i++) {
         pagination.push(i);
       }
-      setPageArr([...pagination]);
+      setPageArr([...pagination]);}
+      catch(err){
+        props.setIsfetch(false)
+        props.setProgress(10);
+        props.setProgress(50);
+         console.log(err);
+          props.setProgress(100);
+      }
     };
   }, []);
 
@@ -50,8 +63,11 @@ export default function News(props) {
     window.scrollTo(0, 0);
     props.setProgress(0);
     setLd(true);
-    setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
+    
+    try{
+      props.setIsfetch(true)
+      setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
+      let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
       props.category
     }&apiKey=${props.api_key}&page=${page - 1}&pageSize=${pageSize}`;
     props.setProgress(10);
@@ -62,10 +78,23 @@ export default function News(props) {
     setArticle(parseData.articles);
     setPage(page - 1);
     setLd(false);
-    props.setProgress(100);
+    props.setProgress(100);}
+   catch(err){
+    props.setIsfetch(false)
+        props.setProgress(10);
+        props.setProgress(50);
+         console.log(err);
+          props.setProgress(100);
+      }
   };
   const changePageSize = async (event) => {
-    pagination = [...pageArr];
+    
+    window.scrollTo(0, 0);
+   
+
+    setLd(true);
+    try{
+      pagination = [...pageArr];
     if (event.target.value < pageSize) {
       for (
         let i = pagination.length;
@@ -84,12 +113,10 @@ export default function News(props) {
       }
     }
     setPageArr(pagination)
-    window.scrollTo(0, 0);
-    localStorage.setItem("pageSize", event.target.value);
-    setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
-    setPageSize(event.target.value);
-
-    setLd(true);
+      localStorage.setItem("pageSize", event.target.value);
+      setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
+      setPageSize(event.target.value);
+      props.setIsfetch(true)
     let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${event.target.value}`;
     props.setProgress(10);
     let data = await fetch(url);
@@ -100,12 +127,22 @@ export default function News(props) {
     setLd(false);
 
     props.setProgress(100);
+  }catch(err){
+    props.setIsfetch(false)
+    props.setProgress(10);
+    props.setProgress(50);
+     console.log(err);
+      props.setProgress(100);
+  }
+
   };
   const toThatPage= async (event)=>{
     window.scrollTo(0, 0);
     setTotalresultTillNow(event.target.value*parseInt(pageSize));
 
     setLd(true);
+    try{
+      props.setIsfetch(true)
     let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
       props.category
     }&apiKey=${props.api_key}&page=${event.target.value}&pageSize=${pageSize}`;
@@ -117,14 +154,25 @@ export default function News(props) {
     setArticle(parseData.articles);
     setPage(page + 1);
     setLd(false);
-    props.setProgress(100);
+    props.setProgress(100);}
+    catch(err){
+      props.setIsfetch(false)
+      props.setProgress(10);
+      props.setProgress(50);
+       console.log(err);
+        props.setProgress(100);
+    }
   }
   const nextsPage = async () => {
     window.scrollTo(0, 0);
 
-    setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
+   
 
     setLd(true);
+
+    try{
+      props.setIsfetch(true)
+      setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
     let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
       props.category
     }&apiKey=${props.api_key}&page=${page + 1}&pageSize=${pageSize}`;
@@ -137,8 +185,16 @@ export default function News(props) {
     setPage(page + 1);
     setLd(false);
     props.setProgress(100);
-  };
+  }  catch(err){
+    props.setIsfetch(false)
+    props.setProgress(10);
+    props.setProgress(50);
+     console.log(err);
+      props.setProgress(100);
+  }
 
+  };
+ if(props.isfetch===true){
   return (
     <>
       <div className="container my-5">
@@ -385,4 +441,22 @@ export default function News(props) {
       </div>
     </>
   );
+}
+else{
+  
+
+  return (
+    <>
+     <div className="container my-5 ">
+     
+      <div className="d-flex flex-column align-items-center" >
+      <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
+     <img className="my-2" src={Onerror}  style={{width:"45vw"}} alt=""/>
+      <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
+      </div>
+     </div>
+      
+    </>
+  )
+}
 }

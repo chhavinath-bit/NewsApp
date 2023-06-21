@@ -3,11 +3,10 @@ import NewsItem from "./NewsItem";
 import loading from "./loading.gif";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-
+import Onerror1 from "./Onerror1.gif"
 export default function Query(props) {
   const date = new Date();
-  let pagination = [];
-  const [pageArr, setPageArr] = useState([]);
+  let [status,setStatus]= useState("ok");
   const [article, setArticle] = useState([]);
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
@@ -27,8 +26,10 @@ export default function Query(props) {
     setLd(true);
     document.title =
       "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
-
+   
     props.setHeadingOfQuery(props.query);
+    try{
+      props.setIsfetch(true)
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
     }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
@@ -40,7 +41,14 @@ export default function Query(props) {
     setArticle(parseData.articles);
     setTotalresult(parseData.totalResults);
     setLd(false);
-    props.setProgress(100);
+    props.setProgress(100);}
+    catch(err){
+      props.setIsfetch(false)
+      props.setProgress(10);
+      props.setProgress(50);
+      console.log(err);
+      props.setProgress(100);
+    }
   };
   useEffect(() => {
     document.title =
@@ -49,7 +57,8 @@ export default function Query(props) {
     return async () => {
       props.setProgress(0);
       setLd(true);
-
+     try{
+      props.setIsfetch(true)
       let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
         props.api_key
       }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
@@ -57,17 +66,20 @@ export default function Query(props) {
       let data = await fetch(url);
       props.setProgress(30);
       let parseData = await data.json();
+      setStatus(parseData.status);
       props.setProgress(50);
       setArticle(parseData.articles);
       setTotalresult(parseData.totalResults);
       setLd(false);
-      props.setProgress(100);
-      console.log(parseData.totalResults); 
-      for (let i = 1; i <= Math.ceil(parseData.totalResults / pageSize); i++) {
-        pagination.push(i);
+      props.setProgress(100); 
+     }
+      catch(err){
+        props.setIsfetch(false)
+        props.setProgress(10);
+        props.setProgress(50);
+        console.log(err);
+        props.setProgress(100);
       }
-      
-      setPageArr([...pagination]);
   
     };
   }, []);
@@ -76,6 +88,8 @@ export default function Query(props) {
     window.scrollTo(0, 0);
     props.setProgress(0);
     setLd(true);
+    try{
+      props.setIsfetch(true)
     setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
@@ -89,35 +103,27 @@ export default function Query(props) {
     setPage(page - 1);
     setLd(false);
     props.setProgress(100);
+  } catch(err){
+    props.setIsfetch(false)
+    props.setProgress(10);
+    props.setProgress(50);
+    console.log(err);
+    props.setProgress(100);
+  }
+
   };
   const changePageSize = async (event) => {
-    console.log(event.target.value);
-    pagination = [...pageArr];
-    if (event.target.value < pageSize) {
-      for (
-        let i = pagination.length;
-        i <= totalresult / event.target.value;
-        i++
-      ) {
-        pagination.push(i + 1);
-      }
-    } else if (event.target.value > pageSize) {
-      for (
-        let i = pagination.length;
-        i > Math.ceil(totalresult / event.target.value);
-        i--
-      ) {
-        pagination.pop();
-      }
-    }
-    console.log(pagination);
-    setPageArr(pagination)
+
+    
     window.scrollTo(0, 0);
-    localStorage.setItem("pageSize", event.target.value);
-    setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
-    setPageSize(event.target.value);
+  
 
     setLd(true);
+    try{
+      props.setIsfetch(true)
+      localStorage.setItem("pageSize", event.target.value);
+      setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
+      setPageSize(event.target.value);
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
     }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${
@@ -132,37 +138,29 @@ export default function Query(props) {
     setLd(false);
 
     props.setProgress(100);
+  } catch(err){
+    props.setIsfetch(false)
+    props.setProgress(10);
+    props.setProgress(50);
+    console.log(err);
+    props.setProgress(100);
+  }
   };
   //   const Changetext= async (event)=>{
   //     await setInputValue(
   //     event.target.value
   //    )
   //   }
-  const toThatPage= async (event)=>{
-    window.scrollTo(0, 0);
-   console.log(event.target.value)
-    setTotalresultTillNow(event.target.value*parseInt(pageSize));
 
-    setLd(true);
-    let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
-      props.api_key
-    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${event.target.value}&pageSize=${pageSize}`;
-    props.setProgress(10);
-    let data = await fetch(url);
-    props.setProgress(30);
-    let parseData = await data.json();
-    props.setProgress(50);
-    setArticle(parseData.articles);
-    setPage(page + 1);
-    setLd(false);
-    props.setProgress(100);
-  }
   const nextsPage = async () => {
     window.scrollTo(0, 0);
 
-    setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
+    
 
     setLd(true);
+   try{
+    props.setIsfetch(true)
+    setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
     }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
@@ -174,9 +172,19 @@ export default function Query(props) {
     setArticle(parseData.articles);
     setPage(page + 1);
     setLd(false);
+   
+    setStatus(parseData.status)
     props.setProgress(100);
+  }catch(err){
+      props.setIsfetch(false)
+      props.setProgress(10);
+      props.setProgress(50);
+      console.log(err);
+      props.setProgress(100);
+    }
   };
-
+ 
+  if(props.isfetch===true && status!=="error"){
   return (
     <>
       <div className="container my-5">
@@ -375,10 +383,8 @@ export default function Query(props) {
         <NewsItem title="news" description="ourDesc"/>
         </div>   */}
         </div>
-        <div className="d-flex justify-content-center my-5">
-          <nav>
-            <ul className="pagination">
-              <li className="page-item">
+        <div className="d-flex justify-content-between my-5">
+         
                 {" "}
                 <button
                   disabled={page === 1}
@@ -392,29 +398,7 @@ export default function Query(props) {
                 >
                   Previous
                 </button>
-              </li>
-{/* 
-              {pageArr.map((ele) => {
-                return (
-                  <li  key={ele} className="page-item">
-                  <button
-                  value={ele} onClick={toThatPage}
-                  className="btn btn-customPagination mx-1"
-                  style={{
-                    background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
-
-                    borderColor: props.textColor,
-                    color: props.textColor,
-                  }}
-                >
-                  {ele}
-                </button>
-                  </li>
-                );
-              })} */}
-
-              <li className="page-item">
-                {" "}
+             
                 <button
                   disabled={totalresultTillNow >= totalresult}
                   className="btn btn-custom"
@@ -428,11 +412,26 @@ export default function Query(props) {
                 >
                   Next
                 </button>
-              </li>
-            </ul>
-          </nav>
+            
         </div>
       </div>
     </>
-  );
+  );}
+  else{
+    
+
+    return (
+      <>
+       <div className="container my-5 ">
+       
+        <div className="d-flex flex-column align-items-center" >
+        <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
+       <img className="my-2" src={Onerror1}  style={{width:"40vw"}} alt=""/>
+        <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
+        </div>
+       </div>
+        
+      </>
+    )
+  }
 }
