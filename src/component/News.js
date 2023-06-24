@@ -224,6 +224,7 @@ export default function News(props) {
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       event.preventDefault();
+                       document.getElementById("linkForQuery").click();
                     }
                   }}
                   onFocus={() => {
@@ -237,6 +238,7 @@ export default function News(props) {
                 />
               </form>
               <button
+               
                 style={{
                   borderTopRightRadius: "30px",
                   height: "35px",
@@ -249,6 +251,7 @@ export default function News(props) {
                 }}
               >
                 <Link
+                id="linkForQuery"
                   onClick={() => {
                     props.setHeadingOfQuery(props.query);
                   }}
