@@ -4,7 +4,7 @@ import loading from "./loading.gif";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-import Onerror from "./Onerror.gif"
+import OnerrorWhileOffline from "./OnerrorWhileOffline";
 
 export default function News(props) {
   let pagination = [];
@@ -50,7 +50,8 @@ export default function News(props) {
       }
       setPageArr([...pagination]);}
       catch(err){
-        props.setIsfetch(false)
+        props.setIsfetch(false);
+        setLd(false);
         props.setProgress(10);
         props.setProgress(50);
          console.log(err);
@@ -80,7 +81,8 @@ export default function News(props) {
     setLd(false);
     props.setProgress(100);}
    catch(err){
-    props.setIsfetch(false)
+    props.setIsfetch(false);
+    setLd(false);
         props.setProgress(10);
         props.setProgress(50);
          console.log(err);
@@ -128,7 +130,8 @@ export default function News(props) {
 
     props.setProgress(100);
   }catch(err){
-    props.setIsfetch(false)
+    props.setIsfetch(false);
+    setLd(false);
     props.setProgress(10);
     props.setProgress(50);
      console.log(err);
@@ -152,11 +155,12 @@ export default function News(props) {
     let parseData = await data.json();
     props.setProgress(50);
     setArticle(parseData.articles);
-    setPage(page + 1);
+    setPage(event.target.value);
     setLd(false);
     props.setProgress(100);}
     catch(err){
-      props.setIsfetch(false)
+      props.setIsfetch(false);
+      setLd(false);
       props.setProgress(10);
       props.setProgress(50);
        console.log(err);
@@ -186,7 +190,8 @@ export default function News(props) {
     setLd(false);
     props.setProgress(100);
   }  catch(err){
-    props.setIsfetch(false)
+    props.setIsfetch(false);
+    setLd(false);
     props.setProgress(10);
     props.setProgress(50);
      console.log(err);
@@ -194,7 +199,7 @@ export default function News(props) {
   }
 
   };
- if(props.isfetch===true){
+ 
   return (
     <>
       <div className="container my-5">
@@ -363,7 +368,7 @@ export default function News(props) {
           Chhavi NEWS - Top Headlines of{" "}
           {props.category.slice(0, 1).toUpperCase() + props.category.slice(1)}
         </h2>
-        <div className="row">
+        {(props.isfetch===true) && <div className="row">
           {article.map((ele) => {
             return (
               <div className="col-md-6 col-lg-4 my-2" key={ele.url}>
@@ -383,7 +388,8 @@ export default function News(props) {
               </div>
             );
           })}
-        </div>
+        </div>}
+        {(props.isfetch===false) && <OnerrorWhileOffline/>}
         <div className="d-flex justify-content-center my-5">
           <nav>
             <ul className="pagination">
@@ -444,22 +450,6 @@ export default function News(props) {
       </div>
     </>
   );
-}
-else{
-  
 
-  return (
-    <>
-     <div className="container my-5 ">
-     
-      <div className="d-flex flex-column align-items-center" >
-      <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
-     <img className="my-2" src={Onerror}  style={{width:"45vw"}} alt=""/>
-      <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
-      </div>
-     </div>
-      
-    </>
-  )
-}
+
 }

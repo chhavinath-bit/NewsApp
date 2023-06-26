@@ -10,6 +10,7 @@ import Navigation from './component/Navigation';
 import LoadingBar from 'react-top-loading-bar';
 import Query from "./component/querypage";
 import ColorPicker from "./component/ColorPicker";
+import Footer from "./component/Footer";
 
 // function App() {
 //   return (
@@ -53,7 +54,6 @@ export default function App(){
         progress={progress}
         onLoaderFinished={() =>setProgress(0)}
       />
-     
              
         <Routes>
           <Route exact path="/"  element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor}  Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={1} category="general" />}>
@@ -83,9 +83,10 @@ export default function App(){
 
          
         </Routes>
-        
+        <Footer />
         </Router>
        {showWheel &&<ColorPicker setColor={setColor} slider={slider} setSlider={setSlider} hsva={hsva} setHsva={setHsva} />  }
+      
       </div>
     )
   

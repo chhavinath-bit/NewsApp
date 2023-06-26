@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 export default function Navigation() {
   return (
     <div style={{fontSize: "18px"}}>
-    <nav className="navbar fixed-top navbar-expand-lg bg-dark"  data-bs-theme="dark">
+    <nav className="navbar navbar-expand-lg bg-dark"  data-bs-theme="dark">
 <div className="container-fluid">
   <Link className="navbar-brand" to="/">NEWS</Link>
   <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

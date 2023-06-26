@@ -12,8 +12,47 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.quote-Area{
+
+  padding: 20px;
+  border-right: 1px solid white;
+  height: 170px;
+
+}
+.footer-Navigation{
+ 
+  border-right: 1px solid white;
+  height: 170px;
+}
+.contact-us{
+  padding-top: 10px;
+  padding:auto;
+
+}
+.quote-Area-sm{
+
+  padding: 20px;
+  border-bottom: 1px solid white;
+
+
+}
+.footer-Navigation-sm{
+   padding-top: 10px;
+  border-bottom: 1px solid white;
+ 
+}
+
 body {
   font-family: 'PT Serif Caption';font-size: 22px;
+}
+.footer{
+  background-color: black;
+  color:aliceblue;
+
+  width: 100vw;
+  padding: 30px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 .btn-custom{
   background-color: black;

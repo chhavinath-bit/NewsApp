@@ -32,15 +32,20 @@ export default function Query(props) {
       props.setIsfetch(true)
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
-    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${1}&pageSize=${pageSize}`;
+
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
     let parseData = await data.json();
     props.setProgress(50);
+    setPage(1);
+   
+    
     setArticle(parseData.articles);
     setTotalresult(parseData.totalResults);
     setLd(false);
+    setStatus(parseData.status);
     props.setProgress(100);}
     catch(err){
       props.setIsfetch(false)
@@ -93,7 +98,7 @@ export default function Query(props) {
     setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
-    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page-1}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -102,6 +107,7 @@ export default function Query(props) {
     setArticle(parseData.articles);
     setPage(page - 1);
     setLd(false);
+    setStatus(parseData.status);
     props.setProgress(100);
   } catch(err){
     props.setIsfetch(false)
@@ -136,7 +142,7 @@ export default function Query(props) {
     props.setProgress(50);
     setArticle(parseData.articles);
     setLd(false);
-
+    setStatus(parseData.status)
     props.setProgress(100);
   } catch(err){
     props.setIsfetch(false)
@@ -146,11 +152,6 @@ export default function Query(props) {
     props.setProgress(100);
   }
   };
-  //   const Changetext= async (event)=>{
-  //     await setInputValue(
-  //     event.target.value
-  //    )
-  //   }
 
   const nextsPage = async () => {
     window.scrollTo(0, 0);
@@ -163,7 +164,7 @@ export default function Query(props) {
     setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
     let url = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${
       props.api_key
-    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page}&pageSize=${pageSize}`;
+    }&from=${date.getFullYear()}-${date.getMonth()}-${date.getDate()}&sortBy=popularity&page=${page+1}&pageSize=${pageSize}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -183,8 +184,7 @@ export default function Query(props) {
       props.setProgress(100);
     }
   };
- 
-  if(props.isfetch===true && status!=="error"){
+
   return (
     <>
       <div className="container my-5">
@@ -349,7 +349,7 @@ export default function Query(props) {
           {props.headingOfQuery.slice(0, 1).toUpperCase() +
             props.headingOfQuery.slice(1)}
         </h2>
-        <div className="row">
+        {(props.isfetch===true && status!=="error") && <div className="row">
           {article.map((ele) => {
             return (
               <div className="col-md-6 col-lg-4 my-2" key={ele.url}>
@@ -369,20 +369,18 @@ export default function Query(props) {
               </div>
             );
           })}
-
-          {/* <div className='col-md-4 my-2'>
-        <NewsItem title="news" description="ourDesc"/>
+        </div>}
+      {(props.isfetch===false || status==="error") &&      <>
+       <div className="container my-5 ">
+       
+        <div className="d-flex flex-column align-items-center" >
+        <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
+       <img className="my-2" src={Onerror1}  style={{width:"40vw"}} alt=""/>
+        <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
         </div>
-        <div className='col-md-4 my-2'>
-        <NewsItem title="news" description="ourDesc"/>
-        </div>
-        <div className='col-md-4 my-2'>
-        <NewsItem title="news" description="ourDesc"/>
-        </div>
-        <div className='col-md-4 my-2'>
-        <NewsItem title="news" description="ourDesc"/>
-        </div>   */}
-        </div>
+       </div>
+        
+      </>}
         <div className="d-flex justify-content-between my-5">
          
                 {" "}
@@ -416,22 +414,6 @@ export default function Query(props) {
         </div>
       </div>
     </>
-  );}
-  else{
-    
+  );
 
-    return (
-      <>
-       <div className="container my-5 ">
-       
-        <div className="d-flex flex-column align-items-center" >
-        <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
-       <img className="my-2" src={Onerror1}  style={{width:"40vw"}} alt=""/>
-        <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
-        </div>
-       </div>
-        
-      </>
-    )
-  }
 }
