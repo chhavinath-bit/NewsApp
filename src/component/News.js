@@ -125,6 +125,7 @@ export default function News(props) {
     }
     setPage(pagVar);
     document.getElementById(`pagination${pagVar}`).style.background="white";
+    document.getElementById(`pagination${pagVar}`).style.color="black";
     setPageArr(pagination)
       localStorage.setItem("pageSize", event.target.value);
       setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
@@ -156,9 +157,12 @@ export default function News(props) {
     for(let items of pageArr){
       if(items===parseInt(event.target.value)){
          document.getElementById(`pagination${items}`).style.background="white";
+         document.getElementById(`pagination${items}`).style.color="black";
+         
       }
       else{
         document.getElementById(`pagination${items}`).style.background= `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`;
+        document.getElementById(`pagination${items}`).style.color=props.textColor;
       }
     }
     setLd(true);
