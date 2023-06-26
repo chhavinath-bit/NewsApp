@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import OnerrorWhileOffline from "./OnerrorWhileOffline";
+import { LastPage } from "@mui/icons-material";
 
 export default function News(props) {
   let pagination = [];
@@ -93,7 +94,8 @@ export default function News(props) {
     
     window.scrollTo(0, 0);
    
-
+    let pagVar= page;
+    let atlastPage=false;
     setLd(true);
     try{
       pagination = [...pageArr];
@@ -106,6 +108,10 @@ export default function News(props) {
         pagination.push(i + 1);
       }
     } else if (event.target.value > pageSize) {
+      if(page===pagination.length){
+        atlastPage =true;
+        
+      }
       for (
         let i = pagination.length;
         i > Math.ceil(totalresult / event.target.value);
@@ -113,13 +119,18 @@ export default function News(props) {
       ) {
         pagination.pop();
       }
+      if(atlastPage===true){
+        pagVar=pagination.length;
+      }
     }
+    setPage(pagVar);
+    document.getElementById(`pagination${pagVar}`).style.background="white";
     setPageArr(pagination)
       localStorage.setItem("pageSize", event.target.value);
       setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
       setPageSize(event.target.value);
       props.setIsfetch(true)
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${event.target.value}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${pagVar}&pageSize=${event.target.value}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -142,7 +153,14 @@ export default function News(props) {
   const toThatPage= async (event)=>{
     window.scrollTo(0, 0);
     setTotalresultTillNow(event.target.value*parseInt(pageSize));
-
+    for(let items of pageArr){
+      if(items===parseInt(event.target.value)){
+         document.getElementById(`pagination${items}`).style.background="white";
+      }
+      else{
+        document.getElementById(`pagination${items}`).style.background= `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`;
+      }
+    }
     setLd(true);
     try{
       props.setIsfetch(true)
@@ -155,7 +173,7 @@ export default function News(props) {
     let parseData = await data.json();
     props.setProgress(50);
     setArticle(parseData.articles);
-    setPage(event.target.value);
+    setPage(parseInt(event.target.value));
     setLd(false);
     props.setProgress(100);}
     catch(err){
@@ -413,6 +431,7 @@ export default function News(props) {
                 return (
                   <li  key={ele} className="page-item">
                   <button
+                 id={`pagination${ele}`}
                   value={ele} onClick={toThatPage}
                   className="btn btn-customPagination mx-1"
                   style={{
