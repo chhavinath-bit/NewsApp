@@ -45,7 +45,7 @@ export default function App(){
   }
   
     return (
-      <div >
+      <>
          <Router>
         <Navigation />
         <LoadingBar
@@ -87,7 +87,7 @@ export default function App(){
         </Router>
        {showWheel &&<ColorPicker setColor={setColor} slider={slider} setSlider={setSlider} hsva={hsva} setHsva={setHsva} />  }
       
-      </div>
+      </>
     )
   
 }

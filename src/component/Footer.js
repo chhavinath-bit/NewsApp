@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <div className="container-fluid">
-    <div className="footer d-flex flex-row row">
+    <div className="footer row">
       <div className="quote-Area d-none d-md-block col-md-6">
         <span style={{ fontStyle: "italic", fontSize:"21px" }}>
           "I still believe that if your aim is to change the world, journalism
