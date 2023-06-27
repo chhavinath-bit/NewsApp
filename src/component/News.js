@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import OnerrorWhileOffline from "./OnerrorWhileOffline";
-import { LastPage } from "@mui/icons-material";
-
+import StatusCodeError from "./StatusCodeError";
 export default function News(props) {
   let pagination = [];
 
@@ -14,6 +13,7 @@ export default function News(props) {
   
   const [pageArr, setPageArr] = useState([]);
   const [article, setArticle] = useState([]);
+  let [status,setStatus]= useState("ok");
   const [ld, setLd] = useState(false);
   const [page, setPage] = useState(1);
   const [totalresult, setTotalresult] = useState(0);
@@ -29,7 +29,7 @@ export default function News(props) {
       props.category === "general"
         ? "Home-News 24/7"
         : "News-" + props.category;
-
+    window.scroll(0,0);
     return async () => {
       props.setProgress(0);
       setLd(true);
@@ -41,6 +41,7 @@ export default function News(props) {
       let data = await fetch(url);
       props.setProgress(30);
       let parseData = await data.json();
+      setStatus(parseData.status);
       props.setProgress(50);
       setArticle(parseData.articles);
       setTotalresult(parseData.totalResults);
@@ -80,6 +81,7 @@ export default function News(props) {
     setArticle(parseData.articles);
     setPage(page - 1);
     setLd(false);
+    setStatus(parseData.status);
     props.setProgress(100);}
    catch(err){
     props.setIsfetch(false);
@@ -139,7 +141,7 @@ export default function News(props) {
     props.setProgress(50);
     setArticle(parseData.articles);
     setLd(false);
-
+    setStatus(parseData.status);
     props.setProgress(100);
   }catch(err){
     props.setIsfetch(false);
@@ -210,6 +212,7 @@ export default function News(props) {
     setArticle(parseData.articles);
     setPage(page + 1);
     setLd(false);
+    setStatus(parseData.status);
     props.setProgress(100);
   }  catch(err){
     props.setIsfetch(false);
@@ -390,7 +393,7 @@ export default function News(props) {
           Chhavi NEWS - Top Headlines of{" "}
           {props.category.slice(0, 1).toUpperCase() + props.category.slice(1)}
         </h2>
-        {(props.isfetch===true) && <div className="row">
+        {(props.isfetch===true && status!=="error") && <div className="row">
           {article.map((ele) => {
             return (
               <div className="col-md-6 col-lg-4 my-2" key={ele.url}>
@@ -411,7 +414,8 @@ export default function News(props) {
             );
           })}
         </div>}
-        {(props.isfetch===false) && <OnerrorWhileOffline/>}
+        {(props.isfetch===false ) &&   <OnerrorWhileOffline/>  }
+      {(status==="error") &&   <StatusCodeError/>  }
         <div className="d-flex justify-content-center my-5">
           <nav>
             <ul className="pagination">

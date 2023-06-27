@@ -3,7 +3,8 @@ import NewsItem from "./NewsItem";
 import loading from "./loading.gif";
 import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-import Onerror1 from "./Onerror1.gif"
+import OnerrorWhileOffline from "./OnerrorWhileOffline";
+import StatusCodeError from "./StatusCodeError";
 export default function Query(props) {
   const date = new Date();
   let [status,setStatus]= useState("ok");
@@ -48,7 +49,8 @@ export default function Query(props) {
     setStatus(parseData.status);
     props.setProgress(100);}
     catch(err){
-      props.setIsfetch(false)
+      props.setIsfetch(false);
+      setLd(false);
       props.setProgress(10);
       props.setProgress(50);
       console.log(err);
@@ -58,6 +60,7 @@ export default function Query(props) {
   useEffect(() => {
     document.title =
       "News of " + props.query.slice(0, 1).toUpperCase() + props.query.slice(1);
+      window.scroll(0,0);
     localStorage.setItem("query", props.query);
     return async () => {
       props.setProgress(0);
@@ -79,7 +82,8 @@ export default function Query(props) {
       props.setProgress(100); 
      }
       catch(err){
-        props.setIsfetch(false)
+        props.setIsfetch(false);
+        setLd(false);
         props.setProgress(10);
         props.setProgress(50);
         console.log(err);
@@ -110,7 +114,8 @@ export default function Query(props) {
     setStatus(parseData.status);
     props.setProgress(100);
   } catch(err){
-    props.setIsfetch(false)
+    props.setIsfetch(false);
+    setLd(false);
     props.setProgress(10);
     props.setProgress(50);
     console.log(err);
@@ -145,7 +150,8 @@ export default function Query(props) {
     setStatus(parseData.status)
     props.setProgress(100);
   } catch(err){
-    props.setIsfetch(false)
+    props.setIsfetch(false);
+    setLd(false);
     props.setProgress(10);
     props.setProgress(50);
     console.log(err);
@@ -174,10 +180,12 @@ export default function Query(props) {
     setPage(page + 1);
     setLd(false);
    
-    setStatus(parseData.status)
+    setStatus(parseData.status);
     props.setProgress(100);
   }catch(err){
-      props.setIsfetch(false)
+
+      props.setIsfetch(false);
+      setLd(false);
       props.setProgress(10);
       props.setProgress(50);
       console.log(err);
@@ -318,7 +326,7 @@ export default function Query(props) {
                 document.getElementById("chooseVibeLg").textContent =
                   "Click here to Close:";
               }}
-              onClick={(event) => {
+              onClick={() => {
                 props.setShowWheel(false);
                 document.getElementById("chooseVibeLg").textContent =
                   "Choose Your Vibe:";
@@ -370,17 +378,8 @@ export default function Query(props) {
             );
           })}
         </div>}
-      {(props.isfetch===false || status==="error") &&      <>
-       <div className="container my-5 ">
-       
-        <div className="d-flex flex-column align-items-center" >
-        <h3  style={{marginTop:"45px"}}> We are sorry for inconvenience.... </h3> 
-       <img className="my-2" src={Onerror1}  style={{width:"40vw"}} alt=""/>
-        <p style={{fontSize :"15px"}}><i> Fun Fact: Right click and open inspect, you can check error in console tab or Network tab</i></p>
-        </div>
-       </div>
-        
-      </>}
+      {(props.isfetch===false ) &&   <OnerrorWhileOffline/>  }
+      {(status==="error") &&   <StatusCodeError/>  }
         <div className="d-flex justify-content-between my-5">
          
                 {" "}
