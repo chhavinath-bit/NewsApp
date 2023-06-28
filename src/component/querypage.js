@@ -195,8 +195,8 @@ export default function Query(props) {
 
   return (
     <>
-      <div className="container my-5">
-        <div className="row" style={{ marginTop: "70px" }}>
+      <div className="container my-1">
+        <div className="row" >
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
               <form>
@@ -344,6 +344,12 @@ export default function Query(props) {
             <option>25</option>
           </select>
         </div>
+        <h2 style={{ color: `${props.textColor}` }} className="my-5">
+          Chhavi NEWS - All News regarding{" "}
+          {props.headingOfQuery.slice(0, 1).toUpperCase() +
+            props.headingOfQuery.slice(1)}
+            <hr/>
+        </h2>
         {ld && (
           <div className="text-center">
             <img style={{ width: "460px" }} src={loading} alt="" />
@@ -352,18 +358,14 @@ export default function Query(props) {
             </p>
           </div>
         )}
-        <h2 style={{ color: `${props.textColor}` }} className="my-4">
-          Chhavi NEWS - All News regarding{" "}
-          {props.headingOfQuery.slice(0, 1).toUpperCase() +
-            props.headingOfQuery.slice(1)}
-        </h2>
+      
         {(props.isfetch===true && status!=="error") && <div className="row">
           {article.map((ele) => {
             return (
               <div className="col-md-6 col-lg-4 my-2" key={ele.url}>
                 <NewsItem
                   title={ele.title}
-                  description={ele.description ? ele.description : ""}
+                  description={ele.description ? ele.description.slice(0,75)+"..." : ""}
                   imageUrl={
                     ele.urlToImage
                       ? ele.urlToImage
