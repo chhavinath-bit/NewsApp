@@ -293,7 +293,7 @@ export default function News(props) {
               </button>
             </div>
 
-            <div className="d-none d-md-block" style={{ marginLeft: "120px" }}>
+            <div className="d-none d-lg-block" style={{ marginLeft: "120px" }}>
               <span className="mx-2" style={{ color: `${props.textColor}` }}>
                 Number of articles per page:
               </span>
@@ -307,6 +307,7 @@ export default function News(props) {
             </div>
 
             <p
+             className="d-none d-md-block"
               style={{
                 marginLeft: "25px",
                 paddingTop: "12px",
@@ -336,7 +337,7 @@ export default function News(props) {
             </p>
             <ColorLensIcon
               style={{ color: `${props.textColor}` }}
-              className="d-lg-none mx-3"
+              className="d-none d-md-inline d-lg-none mx-3"
               onClick={() => {
                 if (
                   document.getElementById("chooseVibeLg").textContent ===
@@ -363,7 +364,7 @@ export default function News(props) {
                 document.getElementById("chooseVibeLg").textContent =
                   "Click here to Close:";
               }}
-              onClick={(event) => {
+              onClick={() => {
                 props.setShowWheel(false);
                 document.getElementById("chooseVibeLg").textContent =
                   "Choose Your Vibe:";
@@ -371,7 +372,7 @@ export default function News(props) {
             />
           </div>
         </div>
-        <div className="d-md-none my-3">
+        <div className="d-lg-none my-3">
           <span style={{ color: `${props.textColor}` }}>
             Number of articles per page:
           </span>
@@ -381,7 +382,56 @@ export default function News(props) {
             <option>25</option>
           </select>
         </div>
-      
+       <div className="d-flex flex-row align-items-center"> <p
+              style={{
+              
+                paddingTop: "12px",
+                color: `${props.textColor}`,
+              }}
+              className="d-md-none"
+              id="chooseVibesm"
+              onClick={() => {
+                if (
+                  document.getElementById("chooseVibesm").textContent ===
+                  "Choose Your Vibe:"
+                ) {
+                  props.setShowWheel(true);
+                  document.getElementById("chooseVibesm").textContent =
+                    "Click here to Close:";
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
+                } else {
+                  props.setShowWheel(false);
+                  document.getElementById("chooseVibesm").textContent =
+                    "Choose Your Vibe:";
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
+                }
+              }}
+            >
+              {localStorage.getItem("chooseVibe") != null
+                ? localStorage.getItem("chooseVibe")
+                : "Choose Your Vibe:"}
+            </p>
+            <ColorLensIcon
+              style={{ color: `${props.textColor}` }}
+              className="d-md-none mx-3"
+              onClick={() => {
+                if (
+                  document.getElementById("chooseVibesm").textContent ===
+                  "Choose Your Vibe:"
+                ) {
+                  props.setShowWheel(true);
+                  document.getElementById("chooseVibesm").textContent =
+                    "Click here to Close:";
+                  localStorage.setItem("chooseVibe", "Click here to Close:");
+                } else {
+                  props.setShowWheel(false);
+                  document.getElementById("chooseVibesm").textContent =
+                    "Choose Your Vibe:";
+                  localStorage.setItem("chooseVibe", "Choose Your Vibe:");
+                }
+              }}
+            />
+            </div>
         <h2 style={{ color: `${props.textColor}` }} className="my-5">
           Chhavi NEWS - Top Headlines of{" "}
           {props.category.slice(0, 1).toUpperCase() + props.category.slice(1)}
