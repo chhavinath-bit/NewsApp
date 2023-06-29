@@ -23,7 +23,7 @@ export default function Home(props) {
     setInterval(()=>{
       document.getElementById("heading").style.left=posi+1 +"vw";
       posi=(posi+1)%74;
-    }, 50)
+    }, 80)
     useEffect(()=>{
       
         props.setCountry("-");
@@ -33,7 +33,7 @@ export default function Home(props) {
   return (
     <div className='App' style={{height:"88vh"}}>
      <p style={{ color: "white", height:"50px", fontWeight:"bold", fontSize:"30px" ,backgroundColor:"black"}}>
-             <span id='heading' style={{position:"relative", left:"0vww", transition:"position 0.05s"}}> Welcome to Chhavi News</span>
+             <span id='heading' style={{position:"relative", left:"0vww", transition:"position 0.08s"}}> Welcome to Chhavi News</span>
             </p>
               
             
