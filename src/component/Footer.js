@@ -2,7 +2,7 @@ import React from "react";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Link } from "react-router-dom";
-export default function Footer() {
+export default function Footer(props) {
 
   return (
     <div className="container-fluid">
@@ -16,13 +16,13 @@ export default function Footer() {
       </div>
       <div className="footer-Navigation d-none d-md-block col-md-3">
         <ul style={{ listStyle: "none" , fontSize:"16px"}}>
-          <li><Link className="nav-link" aria-current="page" to="/">Home</Link></li>
-          <li><Link className="nav-link" to="/Business">Business</Link></li>
-          <li><Link className="nav-link" to="/Entertainment">Entertainment</Link></li>
-          <li> <Link className="nav-link" to="/Health">Health</Link></li>
-          <li> <Link className="nav-link" to="/Science">Science</Link></li>
-          <li><Link className="nav-link" to="/Sports">Sports</Link></li>
-          <li> <Link className="nav-link" to="/Technology">Technology</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  aria-current="page" to="/Home">Home</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Business">Business</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Entertainment">Entertainment</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Health">Health</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Science">Science</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Sports">Sports</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Technology">Technology</Link></li>
 
         </ul>
       </div>
@@ -42,13 +42,13 @@ export default function Footer() {
       </div>
       <div className="d-md-none footer-Navigation-sm col-12">
         <ul style={{ listStyle: "none" , fontSize:"16px"}}>
-          <li><Link className="nav-link" aria-current="page" to="/">Home</Link></li>
-          <li><Link className="nav-link" to="/Business">Business</Link></li>
-          <li><Link className="nav-link" to="/Entertainment">Entertainment</Link></li>
-          <li> <Link className="nav-link" to="/Health">Health</Link></li>
-          <li> <Link className="nav-link" to="/Science">Science</Link></li>
-          <li><Link className="nav-link" to="/Sports">Sports</Link></li>
-          <li> <Link className="nav-link" to="/Technology">Technology</Link></li>
+          <li><Link  style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  aria-current="page" to="/">Home</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Business">Business</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Entertainment">Entertainment</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Health">Health</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Science">Science</Link></li>
+          <li><Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Sports">Sports</Link></li>
+          <li> <Link style={{ pointerEvents:(props.country==="-")?'none':'' }} className="nav-link"  to="/Technology">Technology</Link></li>
 
         </ul>
       </div>

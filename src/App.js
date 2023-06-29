@@ -10,6 +10,7 @@ import Navigation from './component/Navigation';
 import LoadingBar from 'react-top-loading-bar';
 import Query from "./component/querypage";
 import ColorPicker from "./component/ColorPicker";
+import Home from "./component/Home";
 import Footer from "./component/Footer";
 
 // function App() {
@@ -26,6 +27,7 @@ import React, { useState } from 'react'
 export default function App(){
  
   let api_key=process.env.REACT_APP_OUR_SECRET_API
+  let [country, setCountry]= useState(localStorage.getItem("country")?localStorage.getItem("country") :"-");
   let [showWheel,setShowWheel]=useState(localStorage.getItem("chooseVibe")?!(localStorage.getItem("chooseVibe")==="Choose Your Vibe:"):false);
   let [isfetch,setIsfetch]= useState(true);
   const [inputValue, setInputValue]=useState(localStorage.getItem("query")?localStorage.getItem("query"):"");
@@ -47,7 +49,7 @@ export default function App(){
     return (
       <>
          <Router>
-        <Navigation />
+        <Navigation country={country} />
         <LoadingBar
         color='#f11946'
         height={3}
@@ -56,34 +58,37 @@ export default function App(){
       />
              
         <Routes>
-          <Route exact path="/"  element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor}  Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={1} category="general" />}>
+        <Route exact path="/"  element={<Home setCountry={setCountry} />}>
+         
+        </Route>
+          <Route exact path="/Home"  element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor}  Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={1} category="general" />}>
             
           </Route>
-          <Route exact path="/query"  element={<Query isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} headingOfQuery={headingOfQuery} setHeadingOfQuery={setHeadingOfQuery} Changetext={Changetext}  setProgress={setProgress} api_key={api_key} key={1} query={inputValue} />}>
+          <Route exact path="/query"  element={<Query country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} headingOfQuery={headingOfQuery} setHeadingOfQuery={setHeadingOfQuery} Changetext={Changetext}  setProgress={setProgress} api_key={api_key} key={1} query={inputValue} />}>
             
           </Route>
-          <Route exact path="/Business" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery } query={inputValue} setProgress={setProgress} api_key={api_key} key={2} category="business"/>}>
+          <Route exact path="/Business" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery } query={inputValue} setProgress={setProgress} api_key={api_key} key={2} category="business"/>}>
             
           </Route>
-          <Route exact path="/Entertainment" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={3} category="entertainment" />}>
+          <Route exact path="/Entertainment" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={3} category="entertainment" />}>
             
           </Route>
-          <Route exact path="/Health" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={4} category="health" /> }>
+          <Route exact path="/Health" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={4} category="health" /> }>
             
           </Route>
-          <Route exact path="/Science" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={5} category="science" />}>
+          <Route exact path="/Science" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue}  setProgress={setProgress} api_key={api_key} key={5} category="science" />}>
             
           </Route>
-          <Route exact path="/Sports" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={6} category="sports" />}>
+          <Route exact path="/Sports" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={6} category="sports" />}>
             
           </Route>
-          <Route exact path="/Technology" element={<News isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={7} category="technology"/>}>
+          <Route exact path="/Technology" element={<News setCountry={setCountry} country={country} isfetch={isfetch} setIsfetch={setIsfetch} setShowWheel={setShowWheel} color={color} textColor={textColor} Changetext={Changetext} setHeadingOfQuery={setHeadingOfQuery} query={inputValue} setProgress={setProgress} api_key={api_key} key={7} category="technology"/>}>
             
           </Route>
 
          
         </Routes>
-        <Footer />
+        <Footer country={country}/>
         </Router>
        {showWheel &&<ColorPicker setColor={setColor} slider={slider} setSlider={setSlider} hsva={hsva} setHsva={setHsva} />  }
       

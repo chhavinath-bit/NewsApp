@@ -5,6 +5,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import OnerrorWhileOffline from "./OnerrorWhileOffline";
 import StatusCodeError from "./StatusCodeError";
+import { Link } from "react-router-dom";
+
 export default function Query(props) {
   const date = new Date();
   let [status,setStatus]= useState("ok");
@@ -95,7 +97,7 @@ export default function Query(props) {
 
   const previousPage = async () => {
     window.scrollTo(0, 0);
-    props.setProgress(0);
+    if(page!==1){ props.setProgress(0);
     setLd(true);
     try{
       props.setIsfetch(true)
@@ -120,6 +122,10 @@ export default function Query(props) {
     props.setProgress(50);
     console.log(err);
     props.setProgress(100);
+  }}
+  else{
+    document.getElementById("gohomepage").click();
+
   }
 
   };
@@ -437,7 +443,7 @@ export default function Query(props) {
          
                 {" "}
                 <button
-                  disabled={page === 1}
+
                   className="btn btn-custom"
                   style={{
                     background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
@@ -448,7 +454,8 @@ export default function Query(props) {
                 >
                   Previous
                 </button>
-             
+                <Link id="gohomepage" to="/Home">
+</Link>
                 <button
                   disabled={totalresultTillNow >= totalresult}
                   className="btn btn-custom"

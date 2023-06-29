@@ -6,6 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import OnerrorWhileOffline from "./OnerrorWhileOffline";
 import StatusCodeError from "./StatusCodeError";
+
 export default function News(props) {
   let pagination = [];
 
@@ -33,10 +34,10 @@ export default function News(props) {
     return async () => {
       props.setProgress(0);
       setLd(true);
-
+     console.log(props.country)
       try{
         props.setIsfetch(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`
       props.setProgress(10);
       let data = await fetch(url);
       props.setProgress(30);
@@ -63,14 +64,25 @@ export default function News(props) {
   }, []);
 
   const previousPage = async () => {
+    for(let items of pageArr){
+      if(items===parseInt(page-1)){
+         document.getElementById(`pagination${items}`).style.background="white";
+         document.getElementById(`pagination${items}`).style.color="black";
+         
+      }
+      else{
+        document.getElementById(`pagination${items}`).style.background= `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`;
+        document.getElementById(`pagination${items}`).style.color=props.textColor;
+      }
+    }
     window.scrollTo(0, 0);
-    props.setProgress(0);
+ if(page!==1){   props.setProgress(0);
     setLd(true);
     
     try{
       props.setIsfetch(true)
       setTotalresultTillNow(parseInt(totalresultTillNow) - parseInt(pageSize));
-      let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
+      let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${
       props.category
     }&apiKey=${props.api_key}&page=${page - 1}&pageSize=${pageSize}`;
     props.setProgress(10);
@@ -90,8 +102,14 @@ export default function News(props) {
         props.setProgress(50);
          console.log(err);
           props.setProgress(100);
+      }}
+      else{
+        props.setCountry("-");
+        document.getElementById("selectCountryPage").click();
+
       }
   };
+ 
   const changePageSize = async (event) => {
     
     window.scrollTo(0, 0);
@@ -133,7 +151,7 @@ export default function News(props) {
       setTotalresultTillNow((event.target.value * totalresultTillNow) / pageSize);
       setPageSize(event.target.value);
       props.setIsfetch(true)
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.api_key}&page=${pagVar}&pageSize=${event.target.value}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.api_key}&page=${pagVar}&pageSize=${event.target.value}`;
     props.setProgress(10);
     let data = await fetch(url);
     props.setProgress(30);
@@ -170,7 +188,7 @@ export default function News(props) {
     setLd(true);
     try{
       props.setIsfetch(true)
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${
       props.category
     }&apiKey=${props.api_key}&page=${event.target.value}&pageSize=${pageSize}`;
     props.setProgress(10);
@@ -191,17 +209,28 @@ export default function News(props) {
         props.setProgress(100);
     }
   }
+  
   const nextsPage = async () => {
     window.scrollTo(0, 0);
 
-   
+    for(let items of pageArr){
+      if(items===parseInt(page+1)){
+         document.getElementById(`pagination${items}`).style.background="white";
+         document.getElementById(`pagination${items}`).style.color="black";
+         
+      }
+      else{
+        document.getElementById(`pagination${items}`).style.background= `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`;
+        document.getElementById(`pagination${items}`).style.color=props.textColor;
+      }
+    }
 
     setLd(true);
 
     try{
       props.setIsfetch(true)
       setTotalresultTillNow(parseInt(totalresultTillNow) + parseInt(pageSize));
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${
       props.category
     }&apiKey=${props.api_key}&page=${page + 1}&pageSize=${pageSize}`;
     props.setProgress(10);
@@ -474,7 +503,7 @@ export default function News(props) {
               <li className="page-item">
                 {" "}
                 <button
-                  disabled={page === 1}
+      
                   className="btn btn-custom mx-1"
                   style={{
                     background: `hsl(${props.color.h},${props.color.s}%, ${props.color.l}% )`,
@@ -485,6 +514,8 @@ export default function News(props) {
                 >
                   Previous
                 </button>
+                <Link id="selectCountryPage" to="/">
+</Link>
               </li>
 
               {pageArr.map((ele) => {
