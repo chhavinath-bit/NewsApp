@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import loading from "./loading.gif";
+
 export default function Home(props) {
+  let posi=0;
    function selectCountry(event){
-        
+       
         props.setCountry(event.target.value);
         console.log(event.target.value);
         localStorage.setItem("country", event.target.value);
@@ -19,21 +20,27 @@ export default function Home(props) {
         }
         
     }
+    setInterval(()=>{
+      document.getElementById("heading").style.left=posi+1 +"vw";
+      posi=(posi+1)%74;
+    }, 50)
     useEffect(()=>{
+      
         props.setCountry("-");
          localStorage.setItem("country", "-");
 
 },[])
   return (
-    <div className='d-flex flex-row justify-content-center' style={{height:"72vh"}}>
-    <div className='d-flex flex-column justify-content-center text-center'>
-           
-            <img style={{ width: "460px" }} src={loading} alt="" />
-            <p style={{ fontWeight:"bold"}}>
-              Welcome to Chhavi News
+    <div className='App' style={{height:"88vh"}}>
+     <p style={{ color: "white", height:"50px", fontWeight:"bold", fontSize:"30px" ,backgroundColor:"black"}}>
+             <span id='heading' style={{position:"relative", left:"0vww", transition:"position 0.05s"}}> Welcome to Chhavi News</span>
             </p>
-         
-      <select className='text-center' id="selectCountry" onChange={selectCountry}>
+              
+            
+    <div className='d-flex  flex-row justify-content-center' style={{height:"72vh"}}>
+    <div className='d-flex flex-column justify-content-center text-center'>
+          
+      <select style={{ borderTopLeftRadius: "10px" , borderTopRightRadius: "10px"}} className='text-center' id="selectCountry" onChange={selectCountry}>
           <option value="-">Select Country</option>
           <option value="ae">United Arab Emirates</option>
           <option value="ar">Argentina</option>
@@ -103,6 +110,7 @@ export default function Home(props) {
              >
              </Link>
              </div>      
+    </div>
     </div>
   )
 }
