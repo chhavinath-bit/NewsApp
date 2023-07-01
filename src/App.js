@@ -13,15 +13,7 @@ import ColorPicker from "./component/ColorPicker";
 import Home from "./component/Home";
 import Footer from "./component/Footer";
 
-// function App() {
-//   return (
-//     <div className="App">
-  
-//     </div>
-//   );
-// }
 
-// export default App;
 import React, { useState } from 'react'
 
 export default function App(){

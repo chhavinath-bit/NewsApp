@@ -20,20 +20,20 @@ export default function Home(props) {
         }
         
     }
-    setInterval(()=>{
-      document.getElementById("heading").style.left=posi+1 +"vw";
-      posi=(posi+1)%74;
-    }, 80)
+    // setInterval(()=>{
+    //   document.getElementById("heading").style.left=posi+1 +"vw";
+    //   posi=(posi+1)%74;
+    // }, 80)
     useEffect(()=>{
-      
+         
         props.setCountry("-");
          localStorage.setItem("country", "-");
 
 },[])
   return (
     <div className='App' style={{height:"88vh"}}>
-     <p style={{ color: "white", height:"50px", fontWeight:"bold", fontSize:"30px" ,backgroundColor:"black"}}>
-             <span id='heading' style={{position:"relative", left:"0vww", transition:"position 0.08s"}}> Welcome to Chhavi News</span>
+     <p style={{ color: "white", height:"50px", fontWeight:"bold", fontSize:"30px" ,backgroundColor:"black",textAlign:"center"}}>
+             <span id='heading' style={{position:"relative", left:"0vw"}}> Welcome to Chhavi News</span>
             </p>
               
             
