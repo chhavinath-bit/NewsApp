@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import OnerrorWhileOffline from "./OnerrorWhileOffline";
 import StatusCodeError from "./StatusCodeError";
-
+import alt from "../alt.jpg";
 export default function News(props) {
   let pagination = [];
 
@@ -36,6 +36,7 @@ export default function News(props) {
       try {
         props.setIsfetch(true);
         let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.api_key}&page=${page}&pageSize=${pageSize}`;
+        console.log(url);
         props.setProgress(10);
         let data = await fetch(url);
         props.setProgress(30);
@@ -43,6 +44,7 @@ export default function News(props) {
         setStatus(parseData.status);
         props.setProgress(50);
         setArticle(parseData.articles);
+        console.log("articles: ", article);
         setTotalresult(parseData.totalResults);
         setLd(false);
         props.setProgress(100);
@@ -100,6 +102,7 @@ export default function News(props) {
         let parseData = await data.json();
         props.setProgress(50);
         setArticle(parseData.articles);
+        console.log("articles: ", article);
         setPage(page - 1);
         setLd(false);
         setStatus(parseData.status);
@@ -166,6 +169,7 @@ export default function News(props) {
       let parseData = await data.json();
       props.setProgress(50);
       setArticle(parseData.articles);
+      console.log("articles: ", article);
       setLd(false);
       setStatus(parseData.status);
       props.setProgress(100);
@@ -204,6 +208,7 @@ export default function News(props) {
       let parseData = await data.json();
       props.setProgress(50);
       setArticle(parseData.articles);
+      console.log("articles: ", article);
       setPage(parseInt(event.target.value));
       setLd(false);
       props.setProgress(100);
@@ -250,6 +255,7 @@ export default function News(props) {
       let parseData = await data.json();
       props.setProgress(50);
       setArticle(parseData.articles);
+      console.log("articles: ", article);
       setPage(page + 1);
       setLd(false);
       setStatus(parseData.status);
@@ -487,6 +493,7 @@ export default function News(props) {
         {props.isfetch === true && status !== "error" && (
           <div className="row">
             {article.map((ele) => {
+              console.log(ele);
               return (
                 <div className="col-md-6 col-lg-4 my-2" key={ele.url}>
                   <NewsItem
@@ -496,11 +503,7 @@ export default function News(props) {
                         ? ele.description.slice(0, 75) + "..."
                         : ""
                     }
-                    imageUrl={
-                      ele.urlToImage
-                        ? ele.urlToImage
-                        : "https://as2.ftcdn.net/v2/jpg/02/55/73/91/1000_F_255739172_533jjNvdeTQFm1gtkDcPyd3RSKTMe5Ta.jpg"
-                    }
+                    imageUrl={ele.urlToImage ? ele.urlToImage : alt}
                     urlLink={ele.url}
                     author={ele.author ? ele.author : "Unknown"}
                     time={ele.publishedAt}
